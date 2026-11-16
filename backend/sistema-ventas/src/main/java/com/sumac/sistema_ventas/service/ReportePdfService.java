@@ -194,9 +194,9 @@ public class ReportePdfService {
                 }
         }
 
-        public byte[] generarReporteVentas() {
+        public byte[] generarReporteVentas(java.time.LocalDate inicio, java.time.LocalDate fin) {
 
-                List<Pedido> pedidos = pedidoRepository.findAll();
+                List<Pedido> pedidos = pedidoRepository.findAll().stream().filter(p -> enRango(p.getFechaPedido(), inicio, fin)).collect(java.util.stream.Collectors.toList());
 
                 try (ByteArrayOutputStream salida = new ByteArrayOutputStream()) {
 
@@ -277,9 +277,9 @@ public class ReportePdfService {
                 }
         }
 
-        public byte[] generarReporteMovimientos() {
+        public byte[] generarReporteMovimientos(java.time.LocalDate inicio, java.time.LocalDate fin) {
 
-                List<MovimientoInventario> movimientos = movimientoInventarioRepository.findAll();
+                List<MovimientoInventario> movimientos = movimientoInventarioRepository.findAll().stream().filter(m -> enRango(m.getFechaMovimiento(), inicio, fin)).collect(java.util.stream.Collectors.toList());
 
                 ByteArrayOutputStream salida = new ByteArrayOutputStream();
 
@@ -411,9 +411,9 @@ public class ReportePdfService {
                 }
         }
 
-        public byte[] generarReporteAbastecimiento() {
+        public byte[] generarReporteAbastecimiento(java.time.LocalDate inicio, java.time.LocalDate fin) {
 
-                List<SolicitudAbastecimiento> solicitudes = solicitudAbastecimientoRepository.findAll();
+                List<SolicitudAbastecimiento> solicitudes = solicitudAbastecimientoRepository.findAll().stream().filter(x -> enRango(x.getFechaSolicitud(), inicio, fin)).collect(java.util.stream.Collectors.toList());
 
                 ByteArrayOutputStream salida = new ByteArrayOutputStream();
                 Document documento = new Document(PageSize.A4.rotate());
@@ -560,9 +560,9 @@ public class ReportePdfService {
                 }
         }
 
-        public byte[] generarReporteEntregas() {
+        public byte[] generarReporteEntregas(java.time.LocalDate inicio, java.time.LocalDate fin) {
 
-                List<Entrega> entregas = entregaRepository.findAll();
+                List<Entrega> entregas = entregaRepository.findAll().stream().filter(x -> enRango(x.getFechaProgramada(), inicio, fin)).collect(java.util.stream.Collectors.toList());
 
                 ByteArrayOutputStream salida = new ByteArrayOutputStream();
                 Document documento = new Document(PageSize.A4.rotate());
@@ -713,6 +713,17 @@ public class ReportePdfService {
                 PdfPCell celda = new PdfPCell(new Phrase(contenido, fuente));
                 celda.setPadding(5);
                 tabla.addCell(celda);
+        }
+
+        private boolean enRango(java.time.LocalDateTime f, java.time.LocalDate ini, java.time.LocalDate fin) {
+                if (ini == null && fin == null) {
+                        return true;
+                }
+                if (f == null) {
+                        return false;
+                }
+                java.time.LocalDate d = f.toLocalDate();
+                return (ini == null || !d.isBefore(ini)) && (fin == null || !d.isAfter(fin));
         }
 
         private String texto(Object valor) {

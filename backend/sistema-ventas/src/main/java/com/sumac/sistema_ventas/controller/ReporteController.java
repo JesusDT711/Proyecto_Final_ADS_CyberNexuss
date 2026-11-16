@@ -86,9 +86,9 @@ public class ReporteController {
         }
 
         @GetMapping(value = "/ventas/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-        public ResponseEntity<byte[]> generarPdfVentas() {
+        public ResponseEntity<byte[]> generarPdfVentas(@RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate inicio, @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate fin) {
 
-                byte[] pdf = reportePdfService.generarReporteVentas();
+                byte[] pdf = reportePdfService.generarReporteVentas(inicio, fin);
 
                 return ResponseEntity.ok()
                                 .header(HttpHeaders.CONTENT_DISPOSITION,
@@ -99,9 +99,9 @@ public class ReporteController {
         }
 
         @GetMapping(value = "/movimientos/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-        public ResponseEntity<byte[]> generarPdfMovimientos() {
+        public ResponseEntity<byte[]> generarPdfMovimientos(@RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate inicio, @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate fin) {
 
-                byte[] pdf = reportePdfService.generarReporteMovimientos();
+                byte[] pdf = reportePdfService.generarReporteMovimientos(inicio, fin);
 
                 return ResponseEntity.ok()
                                 .header(
@@ -113,9 +113,9 @@ public class ReporteController {
         }
 
         @GetMapping(value = "/abastecimiento/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-        public ResponseEntity<byte[]> generarPdfAbastecimiento() {
+        public ResponseEntity<byte[]> generarPdfAbastecimiento(@RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate inicio, @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate fin) {
 
-                byte[] pdf = reportePdfService.generarReporteAbastecimiento();
+                byte[] pdf = reportePdfService.generarReporteAbastecimiento(inicio, fin);
 
                 return ResponseEntity.ok()
                                 .header(
@@ -127,9 +127,9 @@ public class ReporteController {
         }
 
         @GetMapping(value = "/entregas/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-        public ResponseEntity<byte[]> generarPdfEntregas() {
+        public ResponseEntity<byte[]> generarPdfEntregas(@RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate inicio, @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate fin) {
 
-                byte[] pdf = reportePdfService.generarReporteEntregas();
+                byte[] pdf = reportePdfService.generarReporteEntregas(inicio, fin);
 
                 return ResponseEntity.ok()
                                 .header(
